@@ -6,6 +6,16 @@ namespace PreMailer.Net.Tests
 	public class PreMailerTests
 	{
         [TestMethod]
+        public void Blah()
+        {
+            string input = "<html><head><style type=\"text/css\">.headerLinks a { font-size: 12px; }</style></head><body><div class=\"headerLinks\"><a href=\"home.html\">Test</a></div></body></html>";
+
+            var premailedOutput = PreMailer.MoveCssInline(input);
+
+            Assert.IsTrue(premailedOutput.Html.Contains("<a style=\"font-size: 12px\" href=\"home.html\">"));
+        }
+
+        [TestMethod]
         public void MoveCssInline_HasStyle_DoesNotBreakImageWidthAttribute()
         {
             string input = "<html><head><style type=\"text/css\">img { }</style></head>" +

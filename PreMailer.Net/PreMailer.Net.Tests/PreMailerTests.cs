@@ -30,8 +30,8 @@ namespace PreMailer.Net.Tests
             Assert.IsFalse(premailedOutput.Html.Contains("height=\"100"));
             Assert.IsFalse(premailedOutput.Html.Contains("width=\"100"));
 
-            Assert.IsTrue(premailedOutput.Html.Contains("height=\"49"));
-            Assert.IsTrue(premailedOutput.Html.Contains("width=\"50"));
+            Assert.IsTrue(premailedOutput.Html.Contains("height=\"49\""));
+            Assert.IsTrue(premailedOutput.Html.Contains("width=\"50\""));
         }
 
 		[TestMethod]

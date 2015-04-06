@@ -18,9 +18,19 @@ namespace PreMailer.Net.Tests
 
             var result = CssElementStyleResolver.GetAllStyles(nodewithoutselector, clazz);
 
-            Assert.AreEqual(2, result.Count());
+
+            //CF April 6, 2015: Replacing the width/height dedicated attributes on image tags is causing problems for us. Let's just remove this feature.
+            // See CssStyleEquivalence class.
+
+            //Assert.AreEqual(2, result.Count());
+            Assert.AreEqual(1, result.Count());
+
             Assert.AreEqual("style", result.ElementAt(0).AttributeName);
-            Assert.AreEqual("bgcolor", result.ElementAt(1).AttributeName);
+
+            //CF April 6, 2015: Replacing the width/height dedicated attributes on image tags is causing problems for us. Let's just remove this feature.
+            // See CssStyleEquivalence class.
+
+            //Assert.AreEqual("bgcolor", result.ElementAt(1).AttributeName);
         }
     }
 }

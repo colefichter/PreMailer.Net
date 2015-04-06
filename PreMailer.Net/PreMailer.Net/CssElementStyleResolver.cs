@@ -12,7 +12,8 @@ namespace PreMailer.Net
                     new AttributeToCss {AttributeName = "style", CssValue = styleClass.ToString()}
                 };
 
-            attributeCssList.AddRange(CssStyleEquivalence.FindEquivalent(domElement, styleClass));
+            //CF April 6, 2015: Replacing the width/height dedicated attributes on image tags is causing problems for us. Let's just remove this feature.
+            //attributeCssList.AddRange(CssStyleEquivalence.FindEquivalent(domElement, styleClass));
 
             return attributeCssList;
         }

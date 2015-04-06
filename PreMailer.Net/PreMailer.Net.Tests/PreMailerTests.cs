@@ -5,6 +5,35 @@ namespace PreMailer.Net.Tests
 	[TestClass]
 	public class PreMailerTests
 	{
+        [TestMethod]
+        public void MoveCssInline_DoNotCreateDedicatedAttributes()
+        {
+            string input = "<html><head><style type=\"text/css\">.test { height: 100px; width: 100px; }</style></head><body><img class=\"test\" /></body></html>";
+
+            var premailedOutput = PreMailer.MoveCssInline(input, false);
+
+            Assert.IsTrue(premailedOutput.Html.Contains("style=\"height: 100px;width: 100px"));
+            
+            Assert.IsFalse(premailedOutput.Html.Contains("height=\"100"));
+            Assert.IsFalse(premailedOutput.Html.Contains("width=\"100"));
+        }
+
+        [TestMethod]
+        public void MoveCssInline_DoNotRemoveDedicatedAttributes()
+        {
+            string input = "<html><head><style type=\"text/css\">.test { height: 100px; width: 100px; }</style></head><body><img class=\"test\" width=\"50\" height=\"49\" /></body></html>";
+
+            var premailedOutput = PreMailer.MoveCssInline(input, false);
+
+            Assert.IsTrue(premailedOutput.Html.Contains("style=\"height: 100px;width: 100px"));
+            
+            Assert.IsFalse(premailedOutput.Html.Contains("height=\"100"));
+            Assert.IsFalse(premailedOutput.Html.Contains("width=\"100"));
+
+            Assert.IsTrue(premailedOutput.Html.Contains("height=\"49"));
+            Assert.IsTrue(premailedOutput.Html.Contains("width=\"50"));
+        }
+
 		[TestMethod]
 		public void MoveCssInline_RespectExistingStyleElement()
 		{
@@ -154,15 +183,18 @@ namespace PreMailer.Net.Tests
 			Assert.IsTrue(premailedOutput.Html.Contains("<div>Target</div>"));
 		}
 
-        [TestMethod]
-        public void MoveCssInline_AddBgColorStyle()
-        {
-            string input = "<html><head><style type=\"text/css\">.test { background-color:#f1f1f1; }</style></head><body><table><tr><td class=\"test\" bgcolor=\"\"></td></tr></table></body></html>";
+        //CF April 6, 2015: Replacing the width/height dedicated attributes on image tags is causing problems for us. Let's just remove this feature.
+        // See CssStyleEquivalence class.
 
-            var premailedOutput = PreMailer.MoveCssInline(input, false);
+        //[TestMethod]
+        //public void MoveCssInline_AddBgColorStyle()
+        //{
+        //    string input = "<html><head><style type=\"text/css\">.test { background-color:#f1f1f1; }</style></head><body><table><tr><td class=\"test\" bgcolor=\"\"></td></tr></table></body></html>";
 
-            Assert.IsTrue(premailedOutput.Html.Contains("<td class=\"test\" style=\"background-color: #f1f1f1\" bgcolor=\"#f1f1f1\">"));
-        }
+        //    var premailedOutput = PreMailer.MoveCssInline(input, false);
+
+        //    Assert.IsTrue(premailedOutput.Html.Contains("<td class=\"test\" style=\"background-color: #f1f1f1\" bgcolor=\"#f1f1f1\">"));
+        //}
 
         [TestMethod]
         public void MoveCssInline_AddBgColorStyle_IgnoreElementWithBackgroundColorAndNoBgColor()
